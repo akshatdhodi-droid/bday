@@ -1,180 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Birthday Surprise ❤️</title>
+<meta charset="UTF-8">
+<title>Birthday Surprise ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      overflow: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-    .box {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 420px;
-      text-align: center;
-      z-index: 10;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
+/* MAIN CARD */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+  position: relative;
+  z-index: 1000;
+}
 
-    input, button {
-      padding: 12px;
-      width: 100%;
-      margin-top: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-    }
+/* INPUT + BUTTON */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
 
-    button {
-      background: #ff4f81;
-      color: white;
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #ff4f81;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-    .confetti {
-      position: fixed;
-      top: -10px;
-      font-size: 22px;
-      animation: fall linear infinite;
-      pointer-events: none;
-    }
+/* SLIDER */
+.slider {
+  width: 100%;
+  height: 220px;
+  margin: 15px 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-      }
-    }
+.slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    /* 📸 SLIDER */
-    .slider {
-      width: 100%;
-      height: 220px;
-      margin: 15px 0;
-      overflow: hidden;
-      border-radius: 15px;
-    }
+/* CONFETTI */
+.confetti {
+  position: fixed;
+  top: -10px;
+  font-size: 24px;
+  animation: fall linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
 
-    .slider img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  </style>
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="box" id="content">
-  ⏳ Loading surprise...
+<div class="card" id="app">
+  ⏳ Loading...
 </div>
 
 <audio id="music" src="music.mp3" loop></audio>
 
 <script>
-  /* 🔐 PASSWORD */
-  const PASSWORD = "onlyUs";
+/* SETTINGS */
+const PASSWORD = "onlyUs";
+const OPEN_TIME = new Date("2026-01-01T00:00:00").getTime(); // CHANGE TO 2020 FOR TEST
 
-  /* ⏰ OPEN TIME: 9 JAN, 12:00 AM */
-  const OPEN_TIME = new Date("2020-01-01T00:00:00").getTime();
+const app = document.getElementById("app");
+const music = document.getElementById("music");
 
-  const content = document.getElementById("content");
-  const music = document.getElementById("music");
+/* CONFETTI */
+function startConfetti() {
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.innerHTML = "🎉";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 6000);
+  }
+}
 
-  function startConfetti() {
-    for (let i = 0; i < 40; i++) {
-      const c = document.createElement("div");
-      c.className = "confetti";
-      c.innerHTML = "🎉";
-      c.style.left = Math.random() * 100 + "vw";
-      c.style.animationDuration = (Math.random() * 3 + 2) + "s";
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 6000);
-    }
+/* PASSWORD SCREEN */
+function showPassword() {
+  app.innerHTML = `
+    <h2>🔐 Private Surprise</h2>
+    <input type="password" id="pass" placeholder="Enter password">
+    <button onclick="checkPassword()">Unlock ❤️</button>
+  `;
+}
+
+/* CHECK PASSWORD */
+function checkPassword() {
+  const value = document.getElementById("pass").value;
+  if (value === PASSWORD) {
+    showSurprise();
+  } else {
+    alert("Wrong password 😅");
+  }
+}
+
+/* SURPRISE */
+function showSurprise() {
+  startConfetti();
+  music.play();
+
+  app.innerHTML = `
+    <h2>🎂 Happy Birthday ❤️</h2>
+
+    <div class="slider">
+      <img id="slide" src="photo1.jpg">
+    </div>
+
+    <p>Every moment with you is special 💖</p>
+    <p><strong>— From Akshat ❤️</strong></p>
+  `;
+
+  const photos = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg"
+  ];
+
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % photos.length;
+    document.getElementById("slide").src = photos[i];
+  }, 2500);
+}
+
+/* TIMER */
+function updateTimer() {
+  const now = Date.now();
+  const diff = OPEN_TIME - now;
+
+  if (diff <= 0) {
+    showPassword();
+    return;
   }
 
-  function showPassword() {
-    content.innerHTML = `
-      <h2>🔐 Private Surprise</h2>
-      <input id="pass" type="password" placeholder="Enter password">
-      <button onclick="checkPassword()">Unlock ❤️</button>
-    `;
-  }
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
 
-  function checkPassword() {
-    const pass = document.getElementById("pass").value;
-    if (pass === PASSWORD) {
-      showSurprise();
-    } else {
-      alert("Wrong password 😅");
-    }
-  }
+  app.innerHTML = `
+    <h2>⏳ Surprise Opens In</h2>
+    <p>${d} Days : ${h} Hours</p>
+    <p>${m} Minutes : ${s} Seconds</p>
+  `;
+}
 
-  function showSurprise() {
-    startConfetti();
-    music.play();
-
-    content.innerHTML = `
-      <h2>🎂 Happy Birthday My Love 💕</h2>
-
-      <div class="slider">
-        <img id="slide" src="photo1.jpg">
-      </div>
-
-      <p>
-        Every moment with you is a memory I want to keep forever ❤️
-      </p>
-
-      <p><strong>— From Akshat ❤️</strong></p>
-    `;
-
-    const photos = [
-      "photo1.jpg",
-      "photo2.jpg",
-      "photo3.jpg",
-      "photo4.jpg",
-      "photo5.jpg"
-    ];
-
-    let index = 0;
-    setInterval(() => {
-      index = (index + 1) % photos.length;
-      document.getElementById("slide").src = photos[index];
-    }, 2500);
-  }
-
-  function updateTimer() {
-    const now = Date.now();
-    const diff = OPEN_TIME - now;
-
-    if (diff <= 0) {
-      showPassword();
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    content.innerHTML = `
-      <h2>⏳ Surprise Opens In</h2>
-      <p style="font-size:18px;">
-        ${days} Days : ${hours} Hours<br>
-        ${minutes} Minutes : ${seconds} Seconds
-      </p>
-    `;
-  }
-
-  setInterval(updateTimer, 1000);
+setInterval(updateTimer, 1000);
 </script>
 
 </body>

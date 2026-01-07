@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Birthday Surprise ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      overflow: hidden;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 400px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    input, button {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff4f81;
+      color: white;
+      cursor: pointer;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -10px;
+      font-size: 20px;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box" id="content">
+  ⏳ Loading surprise...
+</div>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+  const PASSWORD = "akki123"; 
+  const OPEN_TIME = new Date("2026-02-14T00:00:00").getTime();
+
+  const content = document.getElementById("content");
+  const music = document.getElementById("music");
+
+  function confetti() {
+    for (let i = 0; i < 30; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.innerHTML = "🎉";
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+
+  function showPassword() {
+    content.innerHTML = `
+      <h2>🔐 Private Surprise</h2>
+      <input id="pass" type="password" placeholder="Enter password">
+      <button onclick="checkPassword()">Unlock ❤️</button>
+    `;
+  }
+
+  function checkPassword() {
+    const pass = document.getElementById("pass").value;
+    if (pass === PASSWORD) {
+      showSurprise();
+    } else {
+      alert("Wrong password 😅");
+    }
+  }
+
+  function showSurprise() {
+    confetti();
+    music.play();
+    content.innerHTML = `
+      <h2>🎂 Happy Birthday My Love 💕</h2>
+      <p>
+        You make my world brighter every day.<br><br>
+        I’m so grateful for you.<br><br>
+        Happy Birthday ❤️
+      </p>
+      <p><strong>— From Akshat ❤️</strong></p>
+    `;
+  }
+
+  function checkTime() {
+    const now = Date.now();
+    if (now >= OPEN_TIME) {
+      showPassword();
+    } else {
+      const secs = Math.floor((OPEN_TIME - now) / 1000);
+      content.innerHTML = `<h3>⏳ Opens in ${secs} seconds</h3>`;
+    }
+  }
+
+  setInterval(checkTime, 1000);
+</script>
+
+</body>
+</html>

@@ -25,10 +25,6 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    h2 {
-      margin-top: 0;
-    }
-
     input, button {
       padding: 12px;
       width: 100%;
@@ -57,6 +53,21 @@
         transform: translateY(110vh);
       }
     }
+
+    /* 📸 SLIDER */
+    .slider {
+      width: 100%;
+      height: 220px;
+      margin: 15px 0;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    .slider img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 
@@ -72,7 +83,7 @@
   /* 🔐 PASSWORD */
   const PASSWORD = "onlyUs";
 
-  /* ⏰ OPEN TIME — 9 JAN, 12:00 AM */
+  /* ⏰ OPEN TIME: 9 JAN, 12:00 AM */
   const OPEN_TIME = new Date("2026-01-09T00:00:00").getTime();
 
   const content = document.getElementById("content");
@@ -110,15 +121,34 @@
   function showSurprise() {
     startConfetti();
     music.play();
+
     content.innerHTML = `
       <h2>🎂 Happy Birthday My Love 💕</h2>
+
+      <div class="slider">
+        <img id="slide" src="photo1.jpg">
+      </div>
+
       <p>
-        You make my world softer, warmer, and happier.<br><br>
-        I’m so grateful for you — today and always.<br><br>
-        Happy Birthday ❤️
+        Every moment with you is a memory I want to keep forever ❤️
       </p>
+
       <p><strong>— From Akshat ❤️</strong></p>
     `;
+
+    const photos = [
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg",
+      "photo4.jpg",
+      "photo5.jpg"
+    ];
+
+    let index = 0;
+    setInterval(() => {
+      index = (index + 1) % photos.length;
+      document.getElementById("slide").src = photos[index];
+    }, 2500);
   }
 
   function updateTimer() {

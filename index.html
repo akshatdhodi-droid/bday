@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Birthday Surprise ❤️</title>
+
   <style>
     body {
       margin: 0;
@@ -18,15 +19,20 @@
       background: white;
       padding: 30px;
       border-radius: 20px;
-      max-width: 400px;
+      max-width: 420px;
       text-align: center;
       z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-top: 0;
     }
 
     input, button {
-      padding: 10px;
+      padding: 12px;
       width: 100%;
-      margin-top: 10px;
+      margin-top: 12px;
       border-radius: 10px;
       border: none;
       font-size: 16px;
@@ -41,8 +47,9 @@
     .confetti {
       position: fixed;
       top: -10px;
-      font-size: 20px;
+      font-size: 22px;
       animation: fall linear infinite;
+      pointer-events: none;
     }
 
     @keyframes fall {
@@ -62,21 +69,24 @@
 <audio id="music" src="music.mp3" loop></audio>
 
 <script>
-  const PASSWORD = "akki123"; 
-  const OPEN_TIME = new Date("2026-02-14T00:00:00").getTime();
+  /* 🔐 PASSWORD */
+  const PASSWORD = "onlyUs";
+
+  /* ⏰ OPEN TIME — 9 JAN, 12:00 AM */
+  const OPEN_TIME = new Date("2026-01-09T00:00:00").getTime();
 
   const content = document.getElementById("content");
   const music = document.getElementById("music");
 
-  function confetti() {
-    for (let i = 0; i < 30; i++) {
+  function startConfetti() {
+    for (let i = 0; i < 40; i++) {
       const c = document.createElement("div");
       c.className = "confetti";
       c.innerHTML = "🎉";
       c.style.left = Math.random() * 100 + "vw";
       c.style.animationDuration = (Math.random() * 3 + 2) + "s";
       document.body.appendChild(c);
-      setTimeout(() => c.remove(), 5000);
+      setTimeout(() => c.remove(), 6000);
     }
   }
 
@@ -98,30 +108,43 @@
   }
 
   function showSurprise() {
-    confetti();
+    startConfetti();
     music.play();
     content.innerHTML = `
       <h2>🎂 Happy Birthday My Love 💕</h2>
       <p>
-        You make my world brighter every day.<br><br>
-        I’m so grateful for you.<br><br>
+        You make my world softer, warmer, and happier.<br><br>
+        I’m so grateful for you — today and always.<br><br>
         Happy Birthday ❤️
       </p>
       <p><strong>— From Akshat ❤️</strong></p>
     `;
   }
 
-  function checkTime() {
+  function updateTimer() {
     const now = Date.now();
-    if (now >= OPEN_TIME) {
+    const diff = OPEN_TIME - now;
+
+    if (diff <= 0) {
       showPassword();
-    } else {
-      const secs = Math.floor((OPEN_TIME - now) / 1000);
-      content.innerHTML = `<h3>⏳ Opens in ${secs} seconds</h3>`;
+      return;
     }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    content.innerHTML = `
+      <h2>⏳ Surprise Opens In</h2>
+      <p style="font-size:18px;">
+        ${days} Days : ${hours} Hours<br>
+        ${minutes} Minutes : ${seconds} Seconds
+      </p>
+    `;
   }
 
-  setInterval(checkTime, 1000);
+  setInterval(updateTimer, 1000);
 </script>
 
 </body>
